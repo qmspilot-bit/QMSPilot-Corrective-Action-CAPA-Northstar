@@ -1,0 +1,35 @@
+{
+  "applicationId": "QMSP-CAPA-001",
+  "name": "Corrective Action & CAPA",
+  "product": "QMSPilot Northstar",
+  "version": "1.0.0",
+  "entrypoint": "index.html",
+  "category": "Quality Execution",
+  "systemOfRecord": "Northstar",
+  "standaloneMode": true,
+  "offlineQueue": true,
+  "recordSchema": "schemas/capa-record.schema.json",
+  "requiredContext": ["tenantId", "user", "site", "permissions"],
+  "permissions": [
+    "capa.read",
+    "capa.create",
+    "capa.update",
+    "capa.submit",
+    "capa.approve",
+    "capa.close",
+    "evidence.upload"
+  ],
+  "workforce": {
+    "Pilot": ["orchestrate", "summarize", "escalate"],
+    "Atlas": ["create_actions", "track_due_dates", "escalate_overdue"],
+    "Forge": ["review_problem_statement", "review_root_cause", "review_actions"],
+    "Sentinel": ["review_compliance", "review_evidence", "gate_closure"],
+    "Vector": ["review_extent", "recommend_systemic_actions", "capture_lessons"]
+  },
+  "events": {
+    "ready": "QMSPILOT_MICROTOOL_READY",
+    "context": "QMSPILOT_CONTEXT",
+    "submit": "QMSPILOT_SUBMIT_TO_NORTHSTAR",
+    "confirmed": "QMSPILOT_SUBMISSION_CONFIRMED"
+  }
+}
