@@ -81,6 +81,15 @@
     .hidden{display:none!important}
     .mandatory:after{content:" *";color:var(--bad)}
     .footer{text-align:center;color:var(--muted);padding:12px 0 28px;font-size:.78rem}
+
+    .dashboard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .metric{background:#071a2c;border:1px solid #294660;border-radius:13px;padding:12px}
+    .metric-value{font-size:1.3rem;font-weight:850;margin-top:4px}
+    .workforce-status{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+    .workforce-line{display:grid;grid-template-columns:58px 1fr;gap:8px;padding:6px 0;font-size:.76rem}
+    .workforce-line strong{color:var(--cyan)}
+    .demo-float{position:fixed;right:24px;bottom:24px;width:min(360px,calc(100vw - 32px));z-index:80;background:linear-gradient(160deg,#102b48,#071626);border:1px solid #3d6b91;border-radius:18px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+    .demo-float h3{margin:5px 28px 8px 0}.demo-float p{color:var(--muted);font-size:.85rem;line-height:1.45}.demo-float small{display:block;color:var(--muted);margin-top:10px}.demo-close{position:absolute;right:10px;top:8px;border:0;background:transparent;color:white;font-size:1.35rem}
     @media(max-width:1150px){.layout{grid-template-columns:230px 1fr}.rightbar{grid-column:1/-1;position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.rightbar .card{margin:0}.topbar{grid-template-columns:210px 1fr}.statusbox{grid-column:1/-1;justify-content:flex-start}}
     @media(max-width:780px){.app{padding:10px}.topbar{position:static;grid-template-columns:1fr}.logo{height:54px}.layout{grid-template-columns:1fr}.sidebar,.rightbar{position:static;max-height:none}.sidebar .card:first-child{display:none}.grid,.grid3,.rightbar{grid-template-columns:1fr}.card{padding:14px}.btn{flex:1}.titleblock{text-align:center}}
     @media print{
@@ -94,7 +103,7 @@
     <img class="logo" alt="QMSPilot" src="data:image/jpeg;base64,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">
     <div class="titleblock">
       <h1>Corrective Action & CAPA Command Center</h1>
-      <p>QMSPilot Northstar Microtool · Tool ID QMSP-CAPA-001 · Version 1.0.0</p>
+      <p>QMSPilot Northstar Microtool · Tool ID QMSP-CAPA-001 · Version 1.1.0</p>
     </div>
     <div class="statusbox">
       <span class="pill good" id="connectionPill">Northstar Bridge Ready</span>
@@ -288,6 +297,22 @@
           <div><strong id="scoreLabel">Record incomplete</strong><div class="small" id="scoreDetail">Complete required fields and actions.</div></div>
         </div>
       </div>
+      <div class="card" id="workforceDashboard">
+        <div class="sectionhead"><div><div class="kicker">Live</div><h3>Workforce Dashboard</h3></div><span class="pill good">Northstar</span></div>
+        <div class="dashboard-grid">
+          <div class="metric"><div class="small">Readiness</div><div class="metric-value" id="dashboardReadiness">0%</div></div>
+          <div class="metric"><div class="small">Open Actions</div><div class="metric-value" id="dashboardOpenActions">0</div></div>
+          <div class="metric"><div class="small">Overdue</div><div class="metric-value" id="dashboardOverdue">0</div></div>
+          <div class="metric"><div class="small">Total COPQ</div><div class="metric-value" id="dashboardCopq">$0.00</div></div>
+        </div>
+        <div class="workforce-status">
+          <div class="workforce-line"><strong>Pilot</strong><span id="pilotStatus">Building CAPA record and workflow</span></div>
+          <div class="workforce-line"><strong>Atlas</strong><span id="atlasStatus">No open accountable actions</span></div>
+          <div class="workforce-line"><strong>Forge</strong><span id="forgeStatus">Problem and RCA review pending</span></div>
+          <div class="workforce-line"><strong>Sentinel</strong><span id="sentinelStatus">Evidence and closure review pending</span></div>
+          <div class="workforce-line"><strong>Vector</strong><span id="vectorStatus">Systemic prevention review pending</span></div>
+        </div>
+      </div>
       <div class="card">
         <h3>Northstar Workforce</h3>
         <div class="agent"><div class="agenttop"><div><div class="agentname">Pilot</div><div class="agentrole">Chief of Staff · orchestration</div></div><span class="agentstate">Ready</span></div></div>
@@ -316,169 +341,6 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
-const TOOL_ID='QMSP-CAPA-001', VERSION='1.0.0';
-let filesMeta=[], audit=[], lastRecordId=null;
-const form=document.getElementById('capaForm');
-const requiredNames=['capaNumber','site','source','owner','problemStatement','containment','rootCause','verificationMethod'];
-
-function init(){
-  const today=new Date().toISOString().slice(0,10);
-  if(!form.elements.dateOpened.value) form.elements.dateOpened.value=today;
-  addActionRow('correctiveTable'); addActionRow('correctiveTable'); addActionRow('preventiveTable');
-  form.addEventListener('input',()=>{recalc();document.getElementById('draftPill').textContent='Unsaved changes';});
-  document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth'}));
-  recalc(); addAudit('Application initialized');
-  window.addEventListener('message',handleHostMessage);
-  window.parent?.postMessage({type:'QMSPILOT_MICROTOOL_READY',toolId:TOOL_ID,version:VERSION},'*');
-}
-
-function addActionRow(tableId,data={}){
-  const preventive=tableId==='preventiveTable';
-  const tr=document.createElement('tr');
-  tr.innerHTML=`<td><textarea data-col="action" placeholder="${preventive?'Systemic preventive action':'Specific corrective action'}">${esc(data.action||'')}</textarea></td>
-  <td><input data-col="owner" value="${esc(data.owner||'')}"></td>
-  <td><input data-col="dueDate" type="date" value="${esc(data.dueDate||'')}"></td>
-  <td>${preventive?`<input data-col="scope" value="${esc(data.scope||'')}">`:`<select data-col="priority"><option>Low</option><option ${data.priority==='Medium'?'selected':''}>Medium</option><option ${data.priority==='High'?'selected':''}>High</option><option ${data.priority==='Critical'?'selected':''}>Critical</option></select>`}</td>
-  <td><select data-col="status"><option>Not Started</option><option ${data.status==='In Progress'?'selected':''}>In Progress</option><option ${data.status==='Complete'?'selected':''}>Complete</option><option ${data.status==='Blocked'?'selected':''}>Blocked</option></select></td>
-  <td><textarea data-col="evidence">${esc(data.evidence||'')}</textarea></td>
-  <td><button type="button" class="btn danger" onclick="this.closest('tr').remove();recalc()">×</button></td>`;
-  document.querySelector(`#${tableId} tbody`).appendChild(tr);
-  tr.querySelectorAll('input,select,textarea').forEach(x=>x.addEventListener('input',recalc));
-}
-function tableData(id){
-  return [...document.querySelectorAll(`#${id} tbody tr`)].map(tr=>{
-    const o={}; tr.querySelectorAll('[data-col]').forEach(el=>o[el.dataset.col]=el.value); return o;
-  }).filter(x=>Object.values(x).some(v=>v));
-}
-function getFormData(){
-  const data={}; new FormData(form).forEach((v,k)=>data[k]=v);
-  data.correctiveActions=tableData('correctiveTable');
-  data.preventiveActions=tableData('preventiveTable');
-  data.attachments=filesMeta; data.auditTrail=audit; data.toolId=TOOL_ID; data.version=VERSION;
-  data.readinessScore=calculateScore(); data.lastRecordId=lastRecordId;
-  data.aiRouting={Pilot:'orchestrate',Atlas:'task_and_due_date_tracking',Forge:'quality_and_rca_review',Sentinel:'compliance_and_evidence_review',Vector:'systemic_improvement_review'};
-  data.submissionTimestamp=new Date().toISOString();
-  return data;
-}
-function calculateScore(){
-  let total=requiredNames.length+7, done=0;
-  requiredNames.forEach(n=>{if(String(form.elements[n]?.value||'').trim())done++});
-  if(tableData('correctiveTable').some(x=>x.action&&x.owner&&x.dueDate))done++;
-  if(tableData('preventiveTable').some(x=>x.action))done++;
-  if(form.elements.rootCauseValidation.value.trim())done++;
-  if(form.elements.extentReview.value.trim())done++;
-  if(form.elements.successCriteria.value.trim())done++;
-  if(form.elements.verificationResults.value.trim())done++;
-  if(form.elements.qualityApproval.value.trim())done++;
-  return Math.round(done/total*100);
-}
-function recalc(){
-  const score=calculateScore();
-  document.getElementById('progressBar').style.width=score+'%';
-  document.getElementById('progressText').textContent=score+'%';
-  document.getElementById('scoreCircle').textContent=score+'%';
-  document.getElementById('scoreCircle').style.background=`conic-gradient(${score>=80?'var(--good)':score>=50?'var(--warn)':'var(--bad)'} ${score*3.6}deg,#17304a 0deg)`;
-  document.getElementById('scoreLabel').textContent=score>=90?'Ready for controlled submission':score>=70?'Nearly ready':score>=40?'Record developing':'Record incomplete';
-  document.getElementById('scoreDetail').textContent=score>=90?'Run final validation before submission.':'Complete objective evidence, owners, due dates and verification.';
-  const costs=['scrapCost','reworkCost','laborCost','customerCost','otherCost'].reduce((s,n)=>s+(parseFloat(form.elements[n].value)||0),0);
-  form.elements.totalCost.value=costs.toFixed(2);
-}
-function validateRecord(show=true){
-  const errors=[];
-  requiredNames.forEach(n=>{if(!String(form.elements[n]?.value||'').trim()) errors.push(n)});
-  const ca=tableData('correctiveTable');
-  if(!ca.some(x=>x.action&&x.owner&&x.dueDate)) errors.push('at least one corrective action with owner and due date');
-  if(form.elements.finalStatus.value==='Closed' && form.elements.effective.value!=='Yes') errors.push('effectiveness must be Yes before closure');
-  if(show) toast(errors.length?`Validation: ${errors.length} item(s) need attention.`:'Validation passed.');
-  return errors;
-}
-function saveDraft(){
-  const d=getFormData(); localStorage.setItem('qmspilot-capa-draft',JSON.stringify(d));
-  document.getElementById('draftPill').textContent='Draft saved '+new Date().toLocaleTimeString();
-  addAudit('Draft saved locally'); toast('Draft saved.');
-}
-function loadDraft(){
-  const raw=localStorage.getItem('qmspilot-capa-draft'); if(!raw)return toast('No saved draft found.');
-  hydrate(JSON.parse(raw)); addAudit('Draft loaded'); toast('Draft loaded.');
-}
-function hydrate(d){
-  Object.entries(d).forEach(([k,v])=>{if(form.elements[k] && typeof v!=='object') form.elements[k].value=v??''});
-  filesMeta=d.attachments||[]; audit=d.auditTrail||[]; lastRecordId=d.lastRecordId||null;
-  document.querySelector('#correctiveTable tbody').innerHTML=''; (d.correctiveActions||[]).forEach(x=>addActionRow('correctiveTable',x)); if(!(d.correctiveActions||[]).length)addActionRow('correctiveTable');
-  document.querySelector('#preventiveTable tbody').innerHTML=''; (d.preventiveActions||[]).forEach(x=>addActionRow('preventiveTable',x)); if(!(d.preventiveActions||[]).length)addActionRow('preventiveTable');
-  renderFiles(); renderAudit(); recalc();
-}
-function captureFiles(e){
-  filesMeta=[...e.target.files].map(f=>({name:f.name,size:f.size,type:f.type,lastModified:f.lastModified}));
-  renderFiles(); addAudit(`${filesMeta.length} evidence file(s) selected`); recalc();
-}
-function renderFiles(){
-  document.getElementById('fileCount').textContent=filesMeta.length+' files';
-  document.getElementById('fileList').innerHTML=filesMeta.map(f=>`<div>• ${esc(f.name)} · ${(f.size/1024).toFixed(1)} KB · ${esc(f.type||'file')}</div>`).join('')||'No files selected.';
-}
-function exportJSON(){
-  const blob=new Blob([JSON.stringify(getFormData(),null,2)],{type:'application/json'});
-  download(blob,(form.elements.capaNumber.value||'CAPA')+'-northstar.json'); addAudit('JSON exported');
-}
-function importJSON(e){
-  const f=e.target.files[0]; if(!f)return; const r=new FileReader();
-  r.onload=()=>{try{hydrate(JSON.parse(r.result));toast('JSON imported.');addAudit('JSON imported')}catch{toast('Invalid JSON file.')}};r.readAsText(f);
-}
-function emailSummary(){
-  const d=getFormData(), subject=encodeURIComponent(`${d.capaNumber||'CAPA'} - ${d.problemStatement?.slice(0,60)||'Corrective Action'}`);
-  const body=encodeURIComponent(`QMSPilot CAPA Summary\n\nCAPA: ${d.capaNumber}\nSite: ${d.site}\nOwner: ${d.owner}\nStatus: ${d.finalStatus}\nProblem: ${d.problemStatement}\nRoot Cause: ${d.rootCause}\nTotal COPQ: $${d.totalCost}\nReadiness: ${d.readinessScore}%\n\nGenerated by QMSPilot Northstar.`);
-  location.href=`mailto:?subject=${subject}&body=${body}`;
-}
-function previewPayload(){
-  const p=document.getElementById('payloadPreview'); p.textContent=JSON.stringify(buildPayload(),null,2); p.classList.toggle('hidden');
-}
-function buildPayload(){
-  const record=getFormData();
-  return {schema:'qmspilot.northstar.capa.v1',event:'CAPA_SUBMITTED',record,workflow:{systemOfRecord:'Northstar',status:record.finalStatus,routeTo:['Pilot','Atlas','Forge','Sentinel','Vector']},security:{tenantId:record.tenantId||null,submittedBy:record.submittedBy||null},client:{toolId:TOOL_ID,version:VERSION,offlineCapable:true}};
-}
-async function submitToNorthstar(){
-  const errors=validateRecord(true); if(errors.length){addAudit('Submission blocked by validation');return}
-  const payload=buildPayload(), mode=form.elements.integrationMode.value, endpoint=form.elements.apiEndpoint.value.trim();
-  try{
-    if(mode==='Northstar Host Bridge' && window.parent!==window){
-      window.parent.postMessage({type:'QMSPILOT_SUBMIT_TO_NORTHSTAR',payload},'*');
-      addAudit('Submitted through Northstar host bridge'); toast('Submission sent to Northstar host.');
-    } else if(mode==='Direct API' && endpoint){
-      const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      if(!res.ok) throw new Error('API '+res.status);
-      const result=await res.json().catch(()=>({}));
-      lastRecordId=result.recordId||result.id||('NS-'+Date.now());
-      addAudit('Direct API submission successful: '+lastRecordId); toast('Submitted. Record ID: '+lastRecordId);
-    } else {
-      const id='NS-CAPA-'+Date.now(); lastRecordId=id;
-      const queue=JSON.parse(localStorage.getItem('qmspilot-northstar-queue')||'[]'); queue.push({...payload,localQueueId:id});
-      localStorage.setItem('qmspilot-northstar-queue',JSON.stringify(queue));
-      addAudit('Queued locally for Northstar sync: '+id); toast('Queued for Northstar. Record ID: '+id);
-    }
-    saveDraft(); document.getElementById('connectionPill').textContent='Northstar Record: '+lastRecordId;
-  }catch(err){addAudit('Submission error: '+err.message);toast('Submission failed: '+err.message)}
-}
-function handleHostMessage(e){
-  const m=e.data||{};
-  if(m.type==='QMSPILOT_CONTEXT'){
-    if(m.tenantId)form.elements.tenantId.value=m.tenantId;
-    if(m.user?.name)form.elements.submittedBy.value=m.user.name;
-    if(m.site)form.elements.site.value=m.site;
-    document.getElementById('connectionPill').textContent='Connected to Northstar';
-    addAudit('Northstar context received'); recalc();
-  }
-  if(m.type==='QMSPILOT_SUBMISSION_CONFIRMED'){
-    lastRecordId=m.recordId; document.getElementById('connectionPill').textContent='Northstar Record: '+m.recordId;
-    addAudit('Northstar confirmed record '+m.recordId);toast('Northstar confirmed submission.');
-  }
-}
-function addAudit(action){audit.unshift({timestamp:new Date().toISOString(),action});audit=audit.slice(0,50);renderAudit()}
-function renderAudit(){document.getElementById('auditTrail').innerHTML=audit.map(a=>`<div style="margin-bottom:8px"><strong>${new Date(a.timestamp).toLocaleString()}</strong><br>${esc(a.action)}</div>`).join('')||'No activity recorded.'}
-function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200)}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-init();
-</script>
+<script type="module" src="src/app.js"></script>
 </body>
 </html>
