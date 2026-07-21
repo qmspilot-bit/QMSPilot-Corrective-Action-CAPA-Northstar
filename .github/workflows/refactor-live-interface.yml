@@ -1,0 +1,34 @@
+name: Refactor CAPA Live Interface
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/refactor-index.py"
+      - ".github/workflows/refactor-live-interface.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Wire production modules into index
+        run: python scripts/refactor-index.py
+
+      - name: Commit generated interface
+        run: |
+          if git diff --quiet; then
+            echo "No interface changes required"
+            exit 0
+          fi
+          git config user.name "QMSPilot Northstar Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Wire live CAPA interface to production modules"
+          git push
