@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qms-pilot.com/schemas/northstar/capa-record.v1.json",
+  "title": "QMSPilot Northstar CAPA Record",
+  "type": "object",
+  "required": ["schema", "event", "record", "workflow", "security", "client"],
+  "properties": {
+    "schema": { "const": "qmspilot.northstar.capa.v1" },
+    "event": { "enum": ["CAPA_DRAFT_SAVED", "CAPA_SUBMITTED", "CAPA_UPDATED", "CAPA_CLOSED", "CAPA_REOPENED"] },
+    "record": {
+      "type": "object",
+      "required": ["capaNumber", "site", "source", "owner", "problemStatement", "containment", "rootCause", "verificationMethod"],
+      "properties": {
+        "capaNumber": { "type": "string", "minLength": 1 },
+        "site": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "problemStatement": { "type": "string", "minLength": 1 },
+        "containment": { "type": "string", "minLength": 1 },
+        "rootCause": { "type": "string", "minLength": 1 },
+        "verificationMethod": { "type": "string", "minLength": 1 },
+        "correctiveActions": { "type": "array", "items": { "$ref": "#/$defs/action" } },
+        "preventiveActions": { "type": "array", "items": { "$ref": "#/$defs/action" } },
+        "attachments": { "type": "array", "items": { "$ref": "#/$defs/attachment" } },
+        "auditTrail": { "type": "array", "items": { "$ref": "#/$defs/auditEvent" } },
+        "readinessScore": { "type": "integer", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": true
+    },
+    "workflow": {
+      "type": "object",
+      "required": ["systemOfRecord", "status", "routeTo"],
+      "properties": {
+        "systemOfRecord": { "const": "Northstar" },
+        "status": { "type": "string" },
+        "routeTo": {
+          "type": "array",
+          "items": { "enum": ["Pilot", "Atlas", "Forge", "Sentinel", "Vector"] },
+          "uniqueItems": true
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "tenantId": { "type": ["string", "null"] },
+        "submittedBy": { "type": ["string", "null"] }
+      }
+    },
+    "client": {
+      "type": "object",
+      "required": ["toolId", "version", "offlineCapable"],
+      "properties": {
+        "toolId": { "const": "QMSP-CAPA-001" },
+        "version": { "type": "string" },
+        "offlineCapable": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "action": {
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "owner": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "priority": { "type": "string" },
+        "scope": { "type": "string" },
+        "status": { "type": "string" },
+        "evidence": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "attachment": {
+      "type": "object",
+      "required": ["name", "size"],
+      "properties": {
+        "name": { "type": "string" },
+        "size": { "type": "integer", "minimum": 0 },
+        "type": { "type": "string" },
+        "lastModified": { "type": "integer" },
+        "storagePath": { "type": "string" },
+        "checksum": { "type": "string" }
+      }
+    },
+    "auditEvent": {
+      "type": "object",
+      "required": ["timestamp", "action"],
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "action": { "type": "string" },
+        "userId": { "type": "string" },
+        "recordVersion": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}
