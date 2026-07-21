@@ -2,7 +2,7 @@
   "applicationId": "QMSP-CAPA-001",
   "name": "Corrective Action & CAPA",
   "product": "QMSPilot Northstar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "entrypoint": "index.html",
   "category": "Quality Execution",
   "systemOfRecord": "Northstar",
@@ -19,6 +19,34 @@
     "capa.close",
     "evidence.upload"
   ],
+  "ui": {
+    "dashboard": {
+      "enabled": true,
+      "location": "Northstar Workforce",
+      "metrics": ["readiness", "openActions", "overdueActions", "totalCOPQ"],
+      "workforceStatus": ["Pilot", "Atlas", "Forge", "Sentinel", "Vector"]
+    },
+    "demo": {
+      "currentPresentation": "floating-card",
+      "futurePresentation": "northstar-toolbox-tile",
+      "component": "src/demo-card.js"
+    }
+  },
+  "futureTile": {
+    "title": "Corrective Action & CAPA",
+    "shortTitle": "CAPA",
+    "category": "Quality Execution",
+    "icon": "corrective-action",
+    "launchMode": "northstar-application",
+    "badgeSources": ["openActions", "overdueActions", "pendingApprovals"]
+  },
+  "modules": {
+    "storage": "src/storage.js",
+    "validation": "src/validation.js",
+    "northstarSdk": "src/northstar-sdk.js",
+    "dashboard": "src/dashboard.js",
+    "demoCard": "src/demo-card.js"
+  },
   "workforce": {
     "Pilot": ["orchestrate", "summarize", "escalate"],
     "Atlas": ["create_actions", "track_due_dates", "escalate_overdue"],
@@ -30,6 +58,7 @@
     "ready": "QMSPILOT_MICROTOOL_READY",
     "context": "QMSPILOT_CONTEXT",
     "submit": "QMSPILOT_SUBMIT_TO_NORTHSTAR",
-    "confirmed": "QMSPILOT_SUBMISSION_CONFIRMED"
+    "confirmed": "QMSPILOT_SUBMISSION_CONFIRMED",
+    "demoLaunched": "QMSPILOT_CAPA_DEMO_LAUNCHED"
   }
 }
