@@ -30,6 +30,21 @@ export class NorthstarSDK {
     }
   }
 
+  accessToken() {
+    try {
+      for (let index = 0; index < window.localStorage.length; index += 1) {
+        const key = window.localStorage.key(index) || "";
+        if (!key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+        const value = JSON.parse(window.localStorage.getItem(key) || "{}");
+        const token = value.access_token || value.currentSession?.access_token || value.session?.access_token;
+        if (token) return token;
+      }
+    } catch {
+      // A missing or stale browser session is handled by the receiving adapter.
+    }
+    return "";
+  }
+
   async submit(payload, { mode, endpoint, enqueue }) {
     if (mode === "Northstar Host Bridge" && window.parent !== window) {
       window.parent.postMessage(
@@ -45,15 +60,18 @@ export class NorthstarSDK {
     }
 
     if (mode === "Direct API" && endpoint) {
+      const token = this.accessToken();
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers.Authorization = `Bearer ${token}`;
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error(`API ${response.status}`);
-
       const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `API ${response.status}`);
+
       this.lastRecordId = result.recordId || result.id || `NS-${Date.now()}`;
       return this.lastRecordId;
     }
