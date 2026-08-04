@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <title>Controlled Work Instructions & Workforce Readiness | QMSPilot Northstar</title>
+  <style>
+    :root{
+      --bg:#07111f;--panel:#0d1b2d;--panel2:#12243a;--line:#29415f;--text:#f4f8fc;--muted:#9eb0c6;
+      --blue:#2f8cff;--cyan:#48d6ff;--good:#35d07f;--warn:#ffbd4a;--bad:#ff6675;--purple:#9b8cff;
+      --shadow:0 22px 60px rgba(0,0,0,.28);--radius:18px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(circle at 85% 0%,rgba(47,140,255,.18),transparent 28%),linear-gradient(180deg,#06101d,#09182a 55%,#07111f);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+    button,input,select,textarea{font:inherit} button{cursor:pointer}
+    .app{max-width:1540px;margin:auto;padding:18px}
+    .topbar{display:grid;grid-template-columns:210px 1fr auto;gap:18px;align-items:center;padding:15px 18px;background:rgba(7,17,31,.94);border:1px solid var(--line);border-radius:22px;position:sticky;top:10px;z-index:30;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+    .brand{background:white;color:#07111f;border-radius:12px;padding:10px 14px;font-weight:900;font-size:1.35rem}.brand span{color:#1978e8}.brand small{display:block;font-size:.62rem;letter-spacing:.15em;color:#516174;margin-top:2px}
+    .title h1{margin:0;font-size:clamp(1.25rem,2vw,2rem)}.title p{margin:5px 0 0;color:var(--muted);font-size:.9rem}
+    .status{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel2);font-size:.75rem}.pill.good{color:#baf6d4;border-color:rgba(53,208,127,.4)}
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}.sidebar{position:sticky;top:116px;align-self:start}
+    .card{background:linear-gradient(180deg,rgba(18,36,58,.97),rgba(10,25,43,.97));border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+    .nav button{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--muted);padding:12px 13px;border-radius:12px;margin:4px 0;text-align:left}.nav button:hover,.nav button.active{background:#17304d;color:white;border-color:#315473}.nav .count{font-size:.7rem;padding:3px 7px;border-radius:999px;background:#081729;border:1px solid var(--line)}
+    .section{display:none}.section.active{display:block}.sectionhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}.sectionhead h2{margin:2px 0 5px}.kicker{text-transform:uppercase;letter-spacing:.16em;color:var(--cyan);font-size:.7rem}.small{color:var(--muted);font-size:.8rem}.btnrow{display:flex;gap:9px;flex-wrap:wrap}
+    .btn{border:1px solid #365674;background:#17304d;color:white;padding:10px 13px;border-radius:11px;font-weight:800}.btn.primary{background:linear-gradient(135deg,#1978f0,#35bfff);border-color:#55c8ff}.btn.good{background:linear-gradient(135deg,#209b5d,#35d07f);border-color:#52df96}.btn.warn{background:#4d3915;border-color:#806123}.btn.ghost{background:transparent}
+    .metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.metric{background:#091a2c;border:1px solid #294660;border-radius:15px;padding:14px}.metric .value{font-size:1.65rem;font-weight:900;margin:6px 0 2px}.metric.good .value{color:var(--good)}.metric.warn .value{color:var(--warn)}.metric.bad .value{color:var(--bad)}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.full{grid-column:1/-1}
+    .subcard{background:#091a2c;border:1px solid #294660;border-radius:15px;padding:15px}.subcard h3{margin:0 0 12px}
+    label{display:block;font-size:.8rem;color:#d5e3f0;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid #31506d;background:#071626;color:white;border-radius:10px;padding:10px 11px;outline:none}textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,140,255,.14)}
+    .tablewrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:920px}th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:.8rem;vertical-align:top}th{background:#0c2138;color:#d6e6f5;position:sticky;top:0}.tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:.7rem;font-weight:800;border:1px solid var(--line);background:#10263f}.tag.good{color:#baf6d4;border-color:rgba(53,208,127,.4)}.tag.warn{color:#ffe1a8;border-color:rgba(255,189,74,.45)}.tag.bad{color:#ffbdc4;border-color:rgba(255,102,117,.45)}.tag.blue{color:#b9ddff;border-color:rgba(47,140,255,.45)}
+    .progress{height:10px;background:#071424;border-radius:99px;overflow:hidden;border:1px solid var(--line)}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+    .workflow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.step{position:relative;background:#091a2c;border:1px solid #294660;border-radius:14px;padding:13px;min-height:100px}.step strong{display:block;margin-bottom:5px}.step:after{content:'→';position:absolute;right:-11px;top:38%;color:var(--cyan);font-size:1.2rem}.step:last-child:after{display:none}
+    .matrix td{text-align:center}.matrix td:first-child,.matrix th:first-child{text-align:left;position:sticky;left:0;background:#0c2138;z-index:2}.cell{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;font-weight:900}.qualified{background:rgba(53,208,127,.2);color:#8bf0b6}.training{background:rgba(255,189,74,.2);color:#ffd27c}.expired{background:rgba(255,102,117,.2);color:#ff9eaa}.na{background:#15273b;color:#72869b}.supervised{background:rgba(155,140,255,.2);color:#c7beff}
+    .timeline{border-left:2px solid #2c4a68;margin-left:8px;padding-left:17px}.event{position:relative;margin-bottom:14px}.event:before{content:'';position:absolute;width:10px;height:10px;border-radius:50%;background:var(--cyan);left:-23px;top:5px;box-shadow:0 0 0 4px #0c1b2e}
+    .alert{padding:12px 13px;border-radius:12px;background:#10263f;border-left:4px solid var(--cyan);font-size:.84rem;color:#d8e9f7}.alert.warn{border-left-color:var(--warn)}
+    dialog{width:min(760px,94vw);border:1px solid var(--line);border-radius:18px;background:#0d1b2d;color:white;padding:0;box-shadow:var(--shadow)}dialog::backdrop{background:rgba(0,0,0,.7)}.modalhead{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}.modalbody{padding:18px}.close{border:0;background:transparent;color:white;font-size:1.4rem}
+    .toast{position:fixed;right:24px;bottom:24px;padding:13px 16px;background:#102b45;border:1px solid #3b688d;border-radius:12px;opacity:0;transform:translateY(18px);transition:.2s;pointer-events:none;z-index:50}.toast.show{opacity:1;transform:none}
+    @media(max-width:1200px){.metrics{grid-template-columns:repeat(3,1fr)}.workflow{grid-template-columns:repeat(3,1fr)}.step:nth-child(3):after{display:none}}
+    @media(max-width:800px){.app{padding:10px}.topbar{position:static;grid-template-columns:1fr}.status{justify-content:flex-start}.layout{grid-template-columns:1fr}.sidebar{position:static}.metrics,.grid2,.grid3,.workflow{grid-template-columns:1fr}.step:after{display:none}.card{padding:14px}.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.nav button{margin:0}.brand{text-align:center}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span>✓</span> QMSPilot<small>NORTHSTAR</small></div>
+    <div class="title"><h1>Controlled Work Instructions & Workforce Readiness</h1><p>Connect approved instructions to training, demonstrated competency, and authorization to perform work.</p></div>
+    <div class="status"><span class="pill good">Design Partner MVP</span><span class="pill">Sandbox Data</span><span class="pill">v0.1.0</span></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="card nav" id="nav">
+        <button class="active" data-section="dashboard">Executive Dashboard <span class="count">8</span></button>
+        <button data-section="library">Document Library <span class="count" id="docCount">6</span></button>
+        <button data-section="builder">Instruction Builder <span class="count">+</span></button>
+        <button data-section="approvals">Approvals & Revisions <span class="count">3</span></button>
+        <button data-section="training">Training Assignments <span class="count">7</span></button>
+        <button data-section="competency">Competency Signoff <span class="count">4</span></button>
+        <button data-section="matrix">Readiness Matrix <span class="count">92%</span></button>
+        <button data-section="shopfloor">Shop-Floor Access <span class="count">QR</span></button>
+      </div>
+      <div class="card">
+        <div class="kicker">Control Objective</div>
+        <h3>Right instruction. Right person. Right revision.</h3>
+        <p class="small">Reading confirms awareness. Demonstration confirms competency. Authorization confirms readiness to work independently.</p>
+      </div>
+    </aside>
+
+    <main>
+      <section class="section active" id="dashboard">
+        <div class="sectionhead"><div><div class="kicker">Management visibility</div><h2>Executive Dashboard</h2><p class="small">Current document health, training gaps, and workforce readiness.</p></div><div class="btnrow"><button class="btn ghost" onclick="window.print()">Print Snapshot</button><button class="btn primary" onclick="showSection('builder')">Create Instruction</button></div></div>
+        <div class="metrics">
+          <div class="metric"><div class="small">Active Documents</div><div class="value" id="activeDocs">4</div><div class="small">2 under change</div></div>
+          <div class="metric warn"><div class="small">Awaiting Approval</div><div class="value">3</div><div class="small">Oldest: 4 days</div></div>
+          <div class="metric warn"><div class="small">Training Required</div><div class="value">7</div><div class="small">Across 3 roles</div></div>
+          <div class="metric good"><div class="small">Fully Authorized</div><div class="value">22</div><div class="small">of 24 employees</div></div>
+          <div class="metric good"><div class="small">Workforce Readiness</div><div class="value">92%</div><div class="small">Target ≥ 95%</div></div>
+          <div class="metric bad"><div class="small">Expired Qualifications</div><div class="value">2</div><div class="small">Immediate action</div></div>
+        </div>
+
+        <div class="grid2" style="margin-top:14px">
+          <div class="card">
+            <h3>Connected Control Flow</h3>
+            <div class="workflow">
+              <div class="step"><strong>1. Create</strong><span class="small">Draft visual instruction and metadata.</span></div>
+              <div class="step"><strong>2. Approve</strong><span class="small">Owner and approver establish control.</span></div>
+              <div class="step"><strong>3. Release</strong><span class="small">Only active revision reaches the floor.</span></div>
+              <div class="step"><strong>4. Train</strong><span class="small">Assignments route by role and work center.</span></div>
+              <div class="step"><strong>5. Verify</strong><span class="small">Trainer observes practical performance.</span></div>
+              <div class="step"><strong>6. Authorize</strong><span class="small">Readiness matrix updates automatically.</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Readiness by Work Center</h3>
+            <div style="margin-bottom:14px"><div class="small">Final Assembly — 96%</div><div class="progress"><span style="width:96%"></span></div></div>
+            <div style="margin-bottom:14px"><div class="small">Foam Operations — 91%</div><div class="progress"><span style="width:91%"></span></div></div>
+            <div style="margin-bottom:14px"><div class="small">Electrical Test — 88%</div><div class="progress"><span style="width:88%"></span></div></div>
+            <div><div class="small">Packaging — 100%</div><div class="progress"><span style="width:100%"></span></div></div>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card"><h3>Priority Actions</h3>
+            <div class="alert warn">Two electrical-test qualifications expired. Supervisors should restrict independent work until revalidated.</div>
+            <div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Status</th></tr></thead><tbody>
+              <tr><td>Approve WI-ET-014 Rev C</td><td>D. Poindexter</td><td>Aug 5</td><td><span class="tag warn">Pending</span></td></tr>
+              <tr><td>Complete practical signoff for M. Cruz</td><td>J. Ellis</td><td>Aug 6</td><td><span class="tag blue">Scheduled</span></td></tr>
+              <tr><td>Review annual SOP-QA-002</td><td>Quality Manager</td><td>Aug 12</td><td><span class="tag good">On Track</span></td></tr>
+            </tbody></table></div>
+          </div>
+          <div class="card"><h3>Recent Controlled Activity</h3><div class="timeline">
+            <div class="event"><strong>WI-FA-006 Rev B activated</strong><div class="small">Training assigned to 8 Final Assembly employees.</div></div>
+            <div class="event"><strong>Competency verified</strong><div class="small">A. Lewis authorized for electrical functional test.</div></div>
+            <div class="event"><strong>Revision impact submitted</strong><div class="small">WI-ET-014 identified 5 affected employees and retraining required.</div></div>
+            <div class="event"><strong>Operator feedback received</strong><div class="small">Photo in Step 4 of WI-FO-009 may show obsolete fixture.</div></div>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="section" id="library">
+        <div class="sectionhead"><div><div class="kicker">Controlled source of truth</div><h2>Document Library</h2><p class="small">Only approved and active documents are available through shop-floor access.</p></div><button class="btn primary" onclick="showSection('builder')">New Controlled Document</button></div>
+        <div class="card">
+          <div class="grid3" style="margin-bottom:14px"><div><label>Search</label><input id="searchDocs" placeholder="Document number, title, process..." oninput="renderDocs()"></div><div><label>Department</label><select id="filterDept" onchange="renderDocs()"><option value="">All Departments</option><option>Quality</option><option>Operations</option><option>Maintenance</option></select></div><div><label>Status</label><select id="filterStatus" onchange="renderDocs()"><option value="">All Statuses</option><option>Active</option><option>Under Review</option><option>Draft</option><option>Superseded</option></select></div></div>
+          <div class="tablewrap"><table><thead><tr><th>Document</th><th>Title</th><th>Type</th><th>Work Center</th><th>Revision</th><th>Owner</th><th>Status</th><th>Training</th><th>Action</th></tr></thead><tbody id="docRows"></tbody></table></div>
+        </div>
+      </section>
+
+      <section class="section" id="builder">
+        <div class="sectionhead"><div><div class="kicker">Visual standard work</div><h2>Instruction Builder</h2><p class="small">Create a controlled instruction that is usable at the point of work.</p></div><div class="btnrow"><button class="btn ghost" onclick="saveDraft()">Save Draft</button><button class="btn primary" onclick="submitInstruction()">Submit for Approval</button></div></div>
+        <div class="card">
+          <div class="grid3">
+            <div><label>Document Number</label><input id="docNumber" placeholder="WI-FA-007"></div><div><label>Title</label><input id="docTitle" placeholder="Install fan motor assembly"></div><div><label>Document Type</label><select id="docType"><option>Work Instruction</option><option>SOP</option><option>Visual Aid</option><option>Checklist</option><option>Standard Work</option></select></div>
+            <div><label>Site</label><input value="Portacool - Center, TX Sandbox"></div><div><label>Department</label><select id="docDept"><option>Operations</option><option>Quality</option><option>Maintenance</option></select></div><div><label>Work Center</label><input id="docWorkCenter" placeholder="Final Assembly"></div>
+            <div><label>Owner</label><input value="Process Owner"></div><div><label>Approver</label><input value="Operations Manager"></div><div><label>Proposed Revision</label><input value="A"></div>
+            <div class="full"><label>Purpose and Scope</label><textarea id="docPurpose" placeholder="Define what this instruction controls, where it applies, and the expected result."></textarea></div>
+          </div>
+        </div>
+        <div class="card"><div class="sectionhead"><div><h3>Instruction Steps</h3><p class="small">Each step can contain media, safety, quality, tooling, and verification requirements.</p></div><button class="btn" onclick="addStep()">+ Add Step</button></div><div id="steps"></div></div>
+        <div class="card"><h3>Training and Authorization Rules</h3><div class="grid3">
+          <div><label>Affected Role</label><input value="Assembly Technician"></div><div><label>Training Level Required</label><select><option>Awareness + Practical Demonstration</option><option>Awareness Only</option><option>Knowledge Verification</option><option>Competency Revalidation</option></select></div><div><label>Independent Work Authorization</label><select><option>Supervisor signoff required</option><option>Automatic after acknowledgment</option></select></div>
+          <div><label>Retraining Trigger</label><select><option>Every revision marked training-impacting</option><option>Every revision</option><option>Annual</option></select></div><div><label>Qualification Expiration</label><select><option>12 months</option><option>24 months</option><option>No expiration</option></select></div><div><label>Evidence Required</label><select><option>Trainer observation + electronic signoff</option><option>Employee acknowledgment</option><option>Quiz + observation</option></select></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="approvals">
+        <div class="sectionhead"><div><div class="kicker">Document change control</div><h2>Approvals & Revision Impact</h2><p class="small">A revision is not released until its operational and training impact is understood.</p></div></div>
+        <div class="grid2"><div class="card"><h3>Pending Approvals</h3><div class="tablewrap"><table><thead><tr><th>Document</th><th>Change</th><th>Submitted By</th><th>Age</th><th>Decision</th></tr></thead><tbody>
+          <tr><td>WI-ET-014 Rev C</td><td>Updated test limits and photo sequence</td><td>Quality Engineer</td><td>4 days</td><td><button class="btn good" onclick="approve(this)">Approve</button></td></tr>
+          <tr><td>SOP-OP-003 Rev B</td><td>Clarified startup responsibilities</td><td>Operations Manager</td><td>2 days</td><td><button class="btn good" onclick="approve(this)">Approve</button></td></tr>
+          <tr><td>WI-FO-009 Rev D</td><td>Fixture and PPE update</td><td>Process Engineer</td><td>1 day</td><td><button class="btn good" onclick="approve(this)">Approve</button></td></tr>
+        </tbody></table></div></div>
+        <div class="card"><h3>Revision Impact Assessment</h3><div class="grid2">
+          <div class="full"><label>What changed?</label><textarea>Electrical test acceptance limits updated to match current engineering specification. Steps 3–5 were reordered and new fixture photographs added.</textarea></div>
+          <div class="full"><label>Why did it change?</label><textarea>Reduce interpretation errors and align the floor instruction with the released engineering requirement.</textarea></div>
+          <div><label>Affected Work Center</label><input value="Electrical Test"></div><div><label>Affected Employees</label><input value="5"></div>
+          <div><label>Retraining Required?</label><select><option>Yes</option><option>No</option></select></div><div><label>Competency Revalidation?</label><select><option>Yes</option><option>No</option></select></div>
+          <div><label>Current WIP Review?</label><select><option>Required</option><option>Not Required</option></select></div><div><label>Primary Impact</label><select><option>Quality / Inspection</option><option>Safety</option><option>Tooling</option><option>Customer Requirement</option></select></div>
+        </div><div class="btnrow" style="margin-top:14px"><button class="btn primary" onclick="toast('Revision impact saved and routed to approver.')">Save Impact Assessment</button></div></div></div>
+      </section>
+
+      <section class="section" id="training">
+        <div class="sectionhead"><div><div class="kicker">Role-based routing</div><h2>Training Assignments</h2><p class="small">Assignments are generated from role, work center, named employee, and revision impact.</p></div><button class="btn primary" onclick="toast('Training assignment created.')">Assign Training</button></div>
+        <div class="card"><div class="tablewrap"><table><thead><tr><th>Employee</th><th>Role</th><th>Document</th><th>Requirement</th><th>Assigned</th><th>Due</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
+          <tr><td>Maria Cruz</td><td>Assembly Technician</td><td>WI-FA-006 Rev B</td><td>Practical demonstration</td><td>Aug 1</td><td>Aug 6</td><td><span class="tag blue">Viewed</span></td><td>Acknowledged</td></tr>
+          <tr><td>Andre Lewis</td><td>Test Technician</td><td>WI-ET-014 Rev C</td><td>Revalidation</td><td>Aug 4</td><td>Aug 8</td><td><span class="tag warn">Assigned</span></td><td>Pending</td></tr>
+          <tr><td>James Hall</td><td>Test Technician</td><td>WI-ET-014 Rev C</td><td>Revalidation</td><td>Aug 4</td><td>Aug 8</td><td><span class="tag warn">Assigned</span></td><td>Pending</td></tr>
+          <tr><td>Sofia Reed</td><td>Foam Operator</td><td>WI-FO-009 Rev D</td><td>Awareness + observation</td><td>Aug 4</td><td>Aug 9</td><td><span class="tag warn">Assigned</span></td><td>Pending</td></tr>
+          <tr><td>Caleb Young</td><td>Foam Operator</td><td>WI-FO-009 Rev D</td><td>Awareness + observation</td><td>Aug 4</td><td>Aug 9</td><td><span class="tag blue">In Progress</span></td><td>Viewed</td></tr>
+        </tbody></table></div></div>
+      </section>
+
+      <section class="section" id="competency">
+        <div class="sectionhead"><div><div class="kicker">Demonstrated ability</div><h2>Competency Signoff</h2><p class="small">Document review alone does not authorize independent work.</p></div></div>
+        <div class="grid2"><div class="card"><h3>Pending Practical Evaluations</h3><div class="tablewrap"><table><thead><tr><th>Employee</th><th>Process</th><th>Trainer</th><th>Level</th><th>Action</th></tr></thead><tbody>
+          <tr><td>Maria Cruz</td><td>Fan motor assembly</td><td>J. Ellis</td><td>Demonstrated competency</td><td><button class="btn good" onclick="openSignoff('Maria Cruz','Fan motor assembly')">Evaluate</button></td></tr>
+          <tr><td>Andre Lewis</td><td>Electrical functional test</td><td>D. Shaw</td><td>Revalidation</td><td><button class="btn good" onclick="openSignoff('Andre Lewis','Electrical functional test')">Evaluate</button></td></tr>
+          <tr><td>Sofia Reed</td><td>Foam fixture setup</td><td>K. Brown</td><td>Demonstrated competency</td><td><button class="btn good" onclick="openSignoff('Sofia Reed','Foam fixture setup')">Evaluate</button></td></tr>
+        </tbody></table></div></div>
+        <div class="card"><h3>Qualification Levels</h3>
+          <div class="subcard" style="margin-bottom:10px"><strong>1. Awareness</strong><div class="small">Employee reviewed and acknowledged the current document.</div></div>
+          <div class="subcard" style="margin-bottom:10px"><strong>2. Understanding</strong><div class="small">Employee confirmed comprehension through questions or knowledge check.</div></div>
+          <div class="subcard" style="margin-bottom:10px"><strong>3. Demonstrated Competency</strong><div class="small">Qualified trainer observed the employee completing the task correctly.</div></div>
+          <div class="subcard"><strong>4. Authorized</strong><div class="small">Employee is approved to perform the work independently.</div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="matrix">
+        <div class="sectionhead"><div><div class="kicker">At-a-glance capability</div><h2>Workforce Readiness Matrix</h2><p class="small">Filter by site, shift, department, work center, machine, supervisor, or process.</p></div><div class="btnrow"><button class="btn ghost">Export</button><button class="btn primary">Assign Gaps</button></div></div>
+        <div class="card"><div class="grid3" style="margin-bottom:14px"><div><label>Department</label><select><option>All Departments</option><option>Operations</option><option>Quality</option></select></div><div><label>Work Center</label><select><option>All Work Centers</option><option>Final Assembly</option><option>Electrical Test</option><option>Foam Operations</option></select></div><div><label>Shift</label><select><option>All Shifts</option><option>First</option><option>Second</option></select></div></div>
+          <div class="tablewrap"><table class="matrix"><thead><tr><th>Employee</th><th>Fan Assembly</th><th>Electrical Test</th><th>Foam Setup</th><th>Final Inspection</th><th>Packaging</th></tr></thead><tbody>
+            <tr><td><strong>Maria Cruz</strong><div class="small">Assembly Technician</div></td><td><span class="cell training">T</span></td><td><span class="cell na">—</span></td><td><span class="cell na">—</span></td><td><span class="cell supervised">S</span></td><td><span class="cell qualified">Q</span></td></tr>
+            <tr><td><strong>Andre Lewis</strong><div class="small">Test Technician</div></td><td><span class="cell qualified">Q</span></td><td><span class="cell expired">E</span></td><td><span class="cell na">—</span></td><td><span class="cell qualified">Q</span></td><td><span class="cell qualified">Q</span></td></tr>
+            <tr><td><strong>James Hall</strong><div class="small">Test Technician</div></td><td><span class="cell qualified">Q</span></td><td><span class="cell expired">E</span></td><td><span class="cell na">—</span></td><td><span class="cell qualified">Q</span></td><td><span class="cell qualified">Q</span></td></tr>
+            <tr><td><strong>Sofia Reed</strong><div class="small">Foam Operator</div></td><td><span class="cell na">—</span></td><td><span class="cell na">—</span></td><td><span class="cell training">T</span></td><td><span class="cell supervised">S</span></td><td><span class="cell qualified">Q</span></td></tr>
+            <tr><td><strong>Caleb Young</strong><div class="small">Foam Operator</div></td><td><span class="cell na">—</span></td><td><span class="cell na">—</span></td><td><span class="cell qualified">Q</span></td><td><span class="cell supervised">S</span></td><td><span class="cell qualified">Q</span></td></tr>
+          </tbody></table></div>
+          <div class="btnrow" style="margin-top:12px"><span class="tag good">Q Qualified</span><span class="tag warn">T Training</span><span class="tag bad">E Expired</span><span class="tag blue">S Supervised</span><span class="tag">— Not Applicable</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="shopfloor">
+        <div class="sectionhead"><div><div class="kicker">Point-of-use access</div><h2>Shop-Floor Access</h2><p class="small">A simplified operator experience with no administrative clutter.</p></div></div>
+        <div class="grid2"><div class="card"><h3>Scan or Search</h3><div class="subcard" style="text-align:center;padding:30px"><div style="font-size:4rem">▦</div><strong>Machine QR: FA-04</strong><div class="small">Opens the latest approved instruction for this work center.</div></div><div style="margin-top:12px"><label>Search by machine, part, process, or document</label><input placeholder="Example: fan motor assembly"></div></div>
+        <div class="card"><div class="kicker">Latest Approved</div><h3>WI-FA-006 Rev B — Fan Motor Assembly</h3><p class="small">Effective August 1, 2026 · Owner: Manufacturing Engineering</p>
+          <div class="subcard"><strong>Step 1 — Verify components</strong><p class="small">Confirm motor, fasteners, harness, and mounting plate match the traveler.</p><span class="tag warn">Quality Checkpoint</span></div>
+          <div class="subcard" style="margin-top:10px"><strong>Step 2 — Install motor</strong><p class="small">Orient the harness toward the cable channel and install four fasteners finger-tight.</p><span class="tag blue">Tool: Torque Driver</span></div>
+          <div class="subcard" style="margin-top:10px"><strong>Step 3 — Torque and verify</strong><p class="small">Torque in cross pattern to the listed value and record completion.</p><span class="tag good">Verification Required</span></div>
+          <div class="btnrow" style="margin-top:14px"><button class="btn good" onclick="toast('Instruction acknowledged.')">Acknowledge Current Revision</button><button class="btn warn" onclick="toast('Improvement feedback sent to the document owner.')">Report an Issue</button></div>
+        </div></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<dialog id="signoffDialog"><div class="modalhead"><strong>Practical Competency Evaluation</strong><button class="close" onclick="signoffDialog.close()">×</button></div><div class="modalbody"><div class="grid2"><div><label>Employee</label><input id="evalEmployee" readonly></div><div><label>Process</label><input id="evalProcess" readonly></div><div><label>Trainer</label><input value="Qualified Trainer"></div><div><label>Evaluation Result</label><select><option>Competent — authorize independent work</option><option>Competent with supervision</option><option>Additional training required</option></select></div><div class="full"><label>Observation Notes</label><textarea placeholder="Record objective evidence of the employee performing the task."></textarea></div><div><label>Qualification Expiration</label><input type="date" value="2027-08-04"></div><div><label>Evidence Reference</label><input placeholder="Photo, checklist, or record ID"></div></div><div class="btnrow" style="margin-top:15px"><button class="btn good" onclick="completeSignoff()">Complete Signoff</button><button class="btn ghost" onclick="signoffDialog.close()">Cancel</button></div></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+  const documents = [
+    {number:'WI-FA-006',title:'Fan Motor Assembly',type:'Work Instruction',dept:'Operations',wc:'Final Assembly',rev:'B',owner:'Manufacturing Eng.',status:'Active',training:'Required'},
+    {number:'WI-ET-014',title:'Electrical Functional Test',type:'Work Instruction',dept:'Quality',wc:'Electrical Test',rev:'C',owner:'Quality Engineer',status:'Under Review',training:'Revalidation'},
+    {number:'WI-FO-009',title:'Foam Fixture Setup',type:'Work Instruction',dept:'Operations',wc:'Foam Operations',rev:'D',owner:'Process Engineer',status:'Under Review',training:'Required'},
+    {number:'SOP-OP-003',title:'Production Startup and Shutdown',type:'SOP',dept:'Operations',wc:'All Operations',rev:'B',owner:'Operations Manager',status:'Under Review',training:'Awareness'},
+    {number:'SOP-QA-002',title:'Final Inspection Control',type:'SOP',dept:'Quality',wc:'Final Inspection',rev:'A',owner:'Quality Manager',status:'Active',training:'Required'},
+    {number:'WI-PK-004',title:'Finished Product Packaging',type:'Work Instruction',dept:'Operations',wc:'Packaging',rev:'C',owner:'Packaging Lead',status:'Active',training:'Required'}
+  ];
+  let stepCount=0;
+  function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.section===id));window.scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showSection(b.dataset.section)));
+  function statusTag(s){const c=s==='Active'?'good':s==='Under Review'?'warn':s==='Draft'?'blue':'bad';return `<span class="tag ${c}">${s}</span>`}
+  function renderDocs(){const q=(document.getElementById('searchDocs')?.value||'').toLowerCase();const dept=document.getElementById('filterDept')?.value||'';const status=document.getElementById('filterStatus')?.value||'';const rows=documents.filter(d=>(!q||Object.values(d).join(' ').toLowerCase().includes(q))&&(!dept||d.dept===dept)&&(!status||d.status===status)).map(d=>`<tr><td><strong>${d.number}</strong></td><td>${d.title}</td><td>${d.type}</td><td>${d.wc}</td><td>${d.rev}</td><td>${d.owner}</td><td>${statusTag(d.status)}</td><td>${d.training}</td><td><button class="btn ghost" onclick="toast('Opened ${d.number} ${d.rev}')">Open</button></td></tr>`).join('');document.getElementById('docRows').innerHTML=rows||'<tr><td colspan="9">No matching documents.</td></tr>';document.getElementById('docCount').textContent=documents.length;document.getElementById('activeDocs').textContent=documents.filter(d=>d.status==='Active').length;}
+  function addStep(){stepCount++;const el=document.createElement('div');el.className='subcard';el.style.marginBottom='12px';el.innerHTML=`<div class="sectionhead"><div><strong>Step ${stepCount}</strong><div class="small">Point-of-work instruction</div></div><button class="btn ghost" onclick="this.closest('.subcard').remove()">Remove</button></div><div class="grid3"><div class="full"><label>Instruction</label><textarea placeholder="Describe the action in clear, observable language."></textarea></div><div><label>Required Tooling</label><input placeholder="Torque driver, fixture..."></div><div><label>PPE / Safety</label><input placeholder="Safety glasses, gloves..."></div><div><label>Process Parameter</label><input placeholder="Torque, temperature, time..."></div><div><label>Quality Checkpoint</label><input placeholder="What must be verified?"></div><div><label>Expected Result</label><input placeholder="What good looks like"></div><div><label>Media</label><input type="file" accept="image/*,video/*"></div></div>`;document.getElementById('steps').appendChild(el);}
+  function saveDraft(){localStorage.setItem('northstar-work-instruction-draft',JSON.stringify({number:docNumber.value,title:docTitle.value,type:docType.value,dept:docDept.value,wc:docWorkCenter.value,purpose:docPurpose.value,steps:stepCount,saved:new Date().toISOString()}));toast('Draft saved locally in the sandbox.');}
+  function submitInstruction(){if(!docNumber.value.trim()||!docTitle.value.trim()||stepCount===0){toast('Add a document number, title, and at least one instruction step.');return;}documents.unshift({number:docNumber.value.trim(),title:docTitle.value.trim(),type:docType.value,dept:docDept.value,wc:docWorkCenter.value||'Unassigned',rev:'A',owner:'Process Owner',status:'Under Review',training:'Required'});renderDocs();toast('Instruction submitted for approval and impact review.');showSection('approvals');}
+  function approve(btn){btn.closest('tr').querySelector('td:last-child').innerHTML='<span class="tag good">Approved</span>';toast('Document approved. Training-impacting release queued.');}
+  function openSignoff(employee,process){evalEmployee.value=employee;evalProcess.value=process;signoffDialog.showModal();}
+  function completeSignoff(){signoffDialog.close();toast('Competency evidence recorded and readiness status updated.');}
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+  renderDocs();addStep();
+</script>
+</body>
+</html>
