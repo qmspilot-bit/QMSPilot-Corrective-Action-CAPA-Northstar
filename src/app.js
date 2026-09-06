@@ -5,13 +5,31 @@ import { updateDashboard } from "./dashboard.js";
 import { mountDemoCard } from "./demo-card.js";
 
 const TOOL_ID = "QMSP-CAPA-001";
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 let filesMeta = [];
 let audit = [];
 let lastRecordId = null;
 let northstar;
 
 const form = document.getElementById("capaForm");
+
+function applyNorthstarContext(context) {
+  if (!context || typeof context !== "object") return;
+  if (context.organizationId) form.elements.tenantId.value = context.organizationId;
+  if (context.userEmail || context.userId) form.elements.submittedBy.value = context.userEmail || context.userId;
+  if (window.parent !== window) {
+    form.elements.integrationMode.value = "Northstar Host Bridge";
+    form.elements.apiEndpoint.value = "";
+  }
+  const connection = document.getElementById("connectionPill");
+  if (connection) {
+    connection.textContent = context.supportMode
+      ? `Northstar Support · ${context.organizationName || "tenant"}`
+      : `Northstar · ${context.organizationName || "connected"}`;
+  }
+  addAudit(`Northstar tenant context received${context.organizationName ? ` · ${context.organizationName}` : ""}`);
+  recalc();
+}
 
 function init() {
   const today = new Date().toISOString().slice(0, 10);
@@ -30,11 +48,17 @@ function init() {
     button.onclick = () => document.getElementById(button.dataset.target).scrollIntoView({ behavior: "smooth" });
   });
 
+  if (window.parent !== window) {
+    form.elements.integrationMode.value = "Northstar Host Bridge";
+    form.elements.apiEndpoint.value = "";
+  }
+
   northstar = new NorthstarSDK({
     toolId: TOOL_ID,
     version: VERSION,
     onAudit: addAudit,
-    onToast: toast
+    onToast: toast,
+    onContext: applyNorthstarContext
   });
 
   northstar.announceReady();
@@ -279,23 +303,6 @@ async function submitToNorthstar() {
   }
 }
 
-function handleHostMessage(event) {
-  const message = event.data || {};
-  if (message.type === "QMSPILOT_CONTEXT") {
-    if (message.tenantId) form.elements.tenantId.value = message.tenantId;
-    if (message.user?.name) form.elements.submittedBy.value = message.user.name;
-    if (message.site) form.elements.site.value = message.site;
-    document.getElementById("connectionPill").textContent = "Connected to Northstar";
-    addAudit("Northstar context received");
-    recalc();
-  }
-
-  if (message.type === "QMSPILOT_SUBMISSION_CONFIRMED") {
-    lastRecordId = message.recordId;
-    document.getElementById("connectionPill").textContent = `Northstar Record: ${message.recordId}`;
-  }
-}
-
 function addAudit(action) {
   audit.unshift({ timestamp: new Date().toISOString(), action });
   audit = audit.slice(0, 50);
@@ -339,7 +346,6 @@ function esc(value) {
   })[character]);
 }
 
-window.addEventListener("message", handleHostMessage);
 Object.assign(window, {
   addActionRow,
   saveDraft,
