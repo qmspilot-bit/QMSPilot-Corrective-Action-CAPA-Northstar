@@ -1,0 +1,29 @@
+name: Repository Security Guard
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tracked-secret-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Block tracked environment and private-key files
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden=$(git ls-files | grep -E '(^|/)(\.env|\.env\..+)$|\.(pem|key)$' | grep -vE '(^|/)\.env\.example$' || true)
+          if [ -n "$forbidden" ]; then
+            echo "Forbidden secret-bearing files are tracked:"
+            echo "$forbidden"
+            exit 1
+          fi
