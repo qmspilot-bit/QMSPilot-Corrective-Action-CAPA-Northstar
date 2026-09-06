@@ -1,34 +1,45 @@
-name: Refactor CAPA Live Interface
+name: CAPA Interface Validation
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "src/**"
+      - "scripts/refactor-index.py"
+      - ".github/workflows/refactor-live-interface.yml"
   push:
     branches: [main]
     paths:
+      - "index.html"
+      - "src/**"
       - "scripts/refactor-index.py"
       - ".github/workflows/refactor-live-interface.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  refactor:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Wire production modules into index
-        run: python scripts/refactor-index.py
-
-      - name: Commit generated interface
+      - name: Validate generated interface wiring
         run: |
-          if git diff --quiet; then
-            echo "No interface changes required"
-            exit 0
-          fi
-          git config user.name "QMSPilot Northstar Automation"
-          git config user.email "actions@users.noreply.github.com"
-          git add index.html
-          git commit -m "Wire live CAPA interface to production modules"
-          git push
+          set -euo pipefail
+          python scripts/refactor-index.py
+          git diff --exit-code -- index.html
+
+      - name: Check JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check src/app.js
+          node --check src/dashboard.js
+          node --check src/demo-card.js
+          node --check src/northstar-sdk.js
+          node --check src/storage.js
+          node --check src/validation.js
